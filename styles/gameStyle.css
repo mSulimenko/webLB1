@@ -45,6 +45,21 @@ body{
 #nextTetrominoName{
     font-size: 25px;
 }
+.leader-container{
+    display: none;
+    position: absolute;
+    z-index: 1;
+    left: 500px;
+    top: 50px;
+    width: 800px;
+    height: 600px;
+    background-color: wheat;
+    border: black 4px;
+}
+#leader{
+    position: relative;
+    z-index: 1;
+}
 
 #nextTetromino{
     font-size: 30px;

@@ -67,6 +67,30 @@ export function increaseSpeed(level) {
 function GameOver(){
     stopLoop();
     document.removeEventListener('keydown', onKeydown);
+    saveUser(tetris.score);
+    showLeaderboard();
+
+    }
+
+function showLeaderboard(){
+    const leaderboardDiv = document.getElementById("leader");
+    const savedData = localStorage.getItem("playerData");
+
+    if (savedData) {
+        const playerData = JSON.parse(savedData);
+        let leaderboardHTML = "<h2>Таблица лидеров:</h2><ul>";
+
+        for (const player of playerData) {
+            leaderboardHTML += `<li>${player.name}: ${player.score}</li>`;
+        }
+
+        leaderboardHTML += "</ul>";
+        leaderboardDiv.innerHTML = leaderboardHTML;
+    } else {
+        leaderboardDiv.innerHTML = "<p>Пока нет данных в таблице лидеров.</p>";
+    }
+    let leaderboardContainer = document.querySelector('.leader-container');
+    leaderboardContainer.style.display = 'block'; // Показываем контейнер
 }
 
 function moveLeft(){
@@ -86,4 +110,23 @@ function startLoop(){
 function stopLoop(){
     cancelAnimationFrame(requestId);
     clearTimeout(timeoutId);
+}
+
+function saveUser(playerScore) {
+    const savedData = localStorage.getItem("playerData");
+    const playerName = localStorage.getItem("tetris.username")
+    let playerData = [];
+
+    if (savedData) {
+        playerData = JSON.parse(savedData);
+    }
+
+    playerData.push({ name: playerName, score: playerScore });
+    playerData.sort((a, b) => b.score - a.score);
+
+    if (playerData.length > 10) {
+        playerData = playerData.slice(0, 10);
+    }
+
+    localStorage.setItem("playerData", JSON.stringify(playerData));
 }
